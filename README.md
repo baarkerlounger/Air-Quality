@@ -45,7 +45,7 @@ We then connect the Gravity Infrared CO2 Sensor.
 
 <img src="images/setup/Infrared-CO2-Sensor-Pinout.jpg" alt="Infrared CO2 Sensor pin diagram" width="500"/>
 
-<table border="1">
+<table style="width: 380px; margin-left: 100px" border="1">
   <thead>
     <tr>
       <th><p><strong>Pin No.<strong></p></th>
@@ -71,7 +71,11 @@ We then connect the Gravity Infrared CO2 Sensor.
     </tr>
   </tbody>
 </table>
+<br />
 
+Using a Male / Male Jumper wire we connect the CO2 Sensor Signal output to Channel 1 on the MCP3008 via the breadboard.
+
+Using Male / Female Jumper wires we connect the CO2 Sensor VCC and GND outputs directly to the Raspberry Pi Zero pins.
 <br></br>
 
 #### Prepare the Raspberry Pi OS [[4]](#ref_4)
