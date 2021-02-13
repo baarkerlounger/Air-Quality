@@ -22,6 +22,8 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 
 #### Connect the Hardware [[2]](#ref_2), [[3]](#ref_3)
 
+Plug the MCP3008 ADC into the breadboard across the centre line.
+
 <img src="images/setup/mcp3008-pins.gif" alt="MCP3008 pin diagram" width="500"/>
 <img src="images/setup/raspberry-pi-pins.png" alt="Raspberry Pi Zero pin diagram" width="500"/>
 
@@ -38,6 +40,37 @@ We're going to connect the MCP3008 to the Raspberry Pi Zero using Software SPI. 
     MCP3008 CS/SHDN to Raspberry Pi pin 25
 
 The last 4 MCP3008 connections (CLK, DOUT, DIN and CS/SHDN) are arbitrary on the Raspberry Pi side, they could be connected to any GPIO (General Purpose Input/Output) pins. If you do connect them to different pins you will need to modify the script below and other example scripts accordingly though so I recommend sticking with the suggested pins for now.
+
+We then connect the Gravity Infrared CO2 Sensor.
+
+<img src="images/setup/Infrared-CO2-Sensor-Pinout.jpg" alt="Infrared CO2 Sensor pin diagram" width="500"/>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th><p><strong>Pin No.<strong></p></th>
+      <th><p><strong>Pin Name</strong></p></th>
+      <th><p><strong>Description</strong></p></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Signal</td>
+      <td>Analog Output (0.4~2V)</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>VCC</td>
+      <td>VCC (4.5~5.5V)</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>GND</td>
+      <td>GND</td>
+    </tr>
+  </tbody>
+</table>
 
 <br></br>
 
