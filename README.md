@@ -25,6 +25,20 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 <img src="images/setup/mcp3008-pins.gif" alt="MCP3008 pin diagram" width="500"/>
 <img src="images/setup/raspberry-pi-pins.png" alt="Raspberry Pi Zero pin diagram" width="500"/>
 
+We're going to connect the MCP3008 to the Raspberry Pi Zero using Software SPI. Use Male / Female Jumper wires to make the following connections:
+
+
+    MCP3008 VDD to Raspberry Pi 3.3V
+    MCP3008 VREF to Raspberry Pi 3.3V
+    MCP3008 AGND to Raspberry Pi GND
+    MCP3008 DGND to Raspberry Pi GND
+    MCP3008 CLK to Raspberry Pi pin 18
+    MCP3008 DOUT to Raspberry Pi pin 23
+    MCP3008 DIN to Raspberry Pi pin 24
+    MCP3008 CS/SHDN to Raspberry Pi pin 25
+
+The last 4 MCP3008 connections (CLK, DOUT, DIN and CS/SHDN) are arbitrary on the Raspberry Pi side, they could be connected to any GPIO (General Purpose Input/Output) pins. If you do connect them to different pins you will need to modify the script below and other example scripts accordingly though so I recommend sticking with the suggested pins for now.
+
 <br></br>
 
 #### Prepare the Raspberry Pi OS [[4]](#ref_4)
