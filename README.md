@@ -22,6 +22,8 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 
 #### Connect the Hardware [2], [3]
 
+![MCP3008 pin diagram](images/setup/mcp3008-pins.gif) ![Raspberry Pi Zero pin diagram](images/setup/raspberry-pi-pins.png)
+
 <br></br>
 
 #### Prepare the Raspberry Pi OS [4]
@@ -250,11 +252,11 @@ sudo systemctl start co2_monitor.service
 
 
 #### References with thanks
-[1] https://thepihut.com/
-[2] https://raspberrypi.stackexchange.com/questions/83610/gpio-pinout-orientation-raspberypi-zero-w
-[3] https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008
-[4] https://qrys.ch/setting-up-a-raspberry-pi-zero-w-wh-the-headless-way-with-wifi-and-vnc/
-[5] https://www.circuits.dk/install-grafana-influxdb-raspberry/
-[6] https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/
-[7] https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm#
-[8] https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1
+[1]: https://thepihut.com/
+[2]: https://raspberrypi.stackexchange.com/questions/83610/gpio-pinout-orientation-raspberypi-zero-w
+[3]: https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008
+[4]: https://qrys.ch/setting-up-a-raspberry-pi-zero-w-wh-the-headless-way-with-wifi-and-vnc/
+[5]: https://www.circuits.dk/install-grafana-influxdb-raspberry/
+[6]: https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/
+[7]: https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm#
+[8]: https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1
