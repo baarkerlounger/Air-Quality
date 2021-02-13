@@ -22,7 +22,8 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 
 #### Connect the Hardware [[2]](#ref_2), [[3]](#ref_3)
 
-![MCP3008 pin diagram](images/setup/mcp3008-pins.gif) ![Raspberry Pi Zero pin diagram](images/setup/raspberry-pi-pins.png)
+<img src="images/setup/mcp3008-pins.gif" alt="MCP3008 pin diagram" width="500"/>
+<img src="images/setup/raspberry-pi-pins.png" alt="Raspberry Pi Zero pin diagram" width="500"/>
 
 <br></br>
 
