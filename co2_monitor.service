@@ -1,0 +1,14 @@
+# /etc/systemd/system/co2_monitor.service
+
+[Unit]
+Description=CO2 Monitor Service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/Adafruit_Python_MCP3008/co2.py
+WorkingDirectory=/home/pi
+User=pi
+
+[Install]
+WantedBy=multi-user.target
