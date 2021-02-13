@@ -12,7 +12,7 @@
 
 - 1 The Pi Hut Jumper Bumper Pack (120pcs Dupont Wire) - £ 6.00
 
-- 1 'NOOBS' Preinstalled Micro SD Card (Latest v3.4.0) 16GB - £ 7.00
+- 1 Micro SD Card 16GB - £ 7.00
 
 We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an inbuilt Analog to Digital converter like Arduinos do we need to add an external ADC to our circuit for which we use the MCP3008.
 
@@ -20,7 +20,11 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 
 ## Installation
 
-#### Prepare the Raspberry Pi Zero
+#### Connect the Hardware
+
+<br></br>
+
+#### Prepare the Raspberry Pi OS
 
 Download the Raspberry Pi Imager from https://www.raspberrypi.org/software/ (Raspberry PI imager) and use it to write `Raspberry Pi OS with desktop and recommended software (32 bit)` (the default option) to the MicroSD card.
 
@@ -77,7 +81,11 @@ sudo apt-get dist-upgrade
 sudo apt-get clean
 ```
 
+<br></br>
+
 #### Install InfluxDB
+
+We're going to use InfluxDB as the timeseries database to store our sensor values. It'll be added as a data source in Grafana.
 
 ```
 # Add the repo key
@@ -125,3 +133,29 @@ influx
 ```
 create database co2
 ```
+
+Your InfluxDB instance should now be available on `http://localhost:8086`
+
+<br></br>
+
+#### Install Grafana
+
+We're going to use Grafana to visualise our CO2 sensor data over time. The Raspberry PI is armv6 based, packages are available at https://grafana.com/grafana/download?platform=arm.
+
+```
+# Install dependencies
+sudo apt-get install -y adduser libfontconfig1
+```
+
+```
+# Download the .deb package
+wget https://dl.grafana.com/oss/release/grafana-rpi_7.4.1_armhf.deb
+```
+
+```
+# Install the downloaded package
+sudo dpkg -i grafana-rpi_7.4.1_armhf.deb
+```
+
+Your Grafana instance should now be available on:
+`http://raspberrypi:3000` or `http://<IP>:3000` from any device on the same network.
