@@ -1,6 +1,6 @@
 # Raspberry Pi Zero based Air Quality Monitoring Project
 
-## Hardware:
+## Hardware [1]:
 
 - 1 Raspberry Pi Zero WH (with pre-soldered header) - £ 13.50
 
@@ -20,11 +20,11 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 
 ## Installation
 
-#### Connect the Hardware
+#### Connect the Hardware [2], [3]
 
 <br></br>
 
-#### Prepare the Raspberry Pi OS
+#### Prepare the Raspberry Pi OS [4]
 
 Download the Raspberry Pi Imager from https://www.raspberrypi.org/software/ (Raspberry PI imager) and use it to write `Raspberry Pi OS with desktop and recommended software (32 bit)` (the default option) to the MicroSD card.
 
@@ -83,7 +83,7 @@ sudo apt-get clean
 
 <br></br>
 
-#### Install InfluxDB
+#### Install InfluxDB [5]
 
 We're going to use InfluxDB as the timeseries database to store our sensor values. It'll be added as a data source in Grafana.
 
@@ -138,7 +138,7 @@ Your InfluxDB instance should now be available on `http://localhost:8086`
 
 <br></br>
 
-#### Install Grafana
+#### Install Grafana [6]
 
 We're going to use Grafana to visualise our CO2 sensor data over time. The Raspberry PI is armv6 based, packages are available at https://grafana.com/grafana/download?platform=arm.
 
@@ -162,7 +162,7 @@ Your Grafana instance should now be available on:
 
 <br> </br>
 
-##### Read Sensor Values and Write them to InfluxDB
+##### Read Sensor Values and Write them to InfluxDB [7], [8]
 
 ```
 # Install dependencies
@@ -182,8 +182,57 @@ sudo python setup.py install
 pip install influxdb
 ```
 
-Copy the provided `co2.py` file.
+Copy the provided `co2.py` script.
 
+The script reads in the sensor value from Channel 1 on the ADC - if you've connected the Gravity Sensor Signal output to a different channel then adjust the code accordingly (line 27).
+
+We then calculate the LSB (Least Significant Bit) size of the ADC using the formula:
+```
+LSB size = FSB * no_ADC_CODES
+```
+
+where:
+ -  FSB is the Full Scale Range of the values we are representing. In this case the Gravity Infrared Sensor V1.1 measures CO2 concentrations from 0 to 5000 ppm (parts per million) so our FSB is 5000.
+
+ - no_ADC_CODES is the number of digital output codes/values the ADC has available to represent the FSB. In this case the MCP3008 we are using is a 10Bit ADC so we have 2^10 = 1024 codes available.
+
+We calculate the output voltage of the sensor by
+ ```
+ voltage = sensor_value * lsb_size
+ ```
+
+ i.e.
+
+ ```
+ voltage = sensor_value * (5000 / 1024.0)
+ ```
+
+ The Gravity Infrared CO2 Sensor V1.1 output signal has a range from 0.4V - 2V. If our calculated voltage is below 0.4V (400mV) we know the sensor is still pre-heating (~3 mins).
+
+ If it's between 0.4V and 2V we need to convert it back to concentration in ppm.
+
+ We do that by scaling our available output voltage values (1600mV) over the range of measurement values (5000ppm):
+
+ ```
+ (voltage - 400) * 50.0 / 16.0
+ ```
+
+ Giving for example:
+
+ ```
+ (400mV - 400) * 50 / 16 = 0 ppm
+ (800mV - 400) * 50 / 16 = 1250 ppm
+ (1200mV - 400) * 50 / 16 = 2500 ppm
+ (2000mV - 400) * 50 / 16 = 5000 ppm
+ ```
+
+ We calculate the associated error using the stated accuracy of the CO2 sensor (± 50ppm + 3%):
+
+ ```
+ error = 50 + ((calculated_concentration / 100) * 3)
+ ```
+
+This does not account for any additional error introduced by the ADC.
 
 <br> </br>
 
@@ -198,3 +247,14 @@ sudo systemctl daemon-reload
 sudo systemctl enable co2_monitor.service
 sudo systemctl start co2_monitor.service
 ```
+
+
+#### References with thanks
+[1] https://thepihut.com/
+[2] https://raspberrypi.stackexchange.com/questions/83610/gpio-pinout-orientation-raspberypi-zero-w
+[3] https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008
+[4] https://qrys.ch/setting-up-a-raspberry-pi-zero-w-wh-the-headless-way-with-wifi-and-vnc/
+[5] https://www.circuits.dk/install-grafana-influxdb-raspberry/
+[6] https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/
+[7] https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm#
+[8] https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1
