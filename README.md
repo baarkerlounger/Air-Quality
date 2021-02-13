@@ -159,3 +159,42 @@ sudo dpkg -i grafana-rpi_7.4.1_armhf.deb
 
 Your Grafana instance should now be available on:
 `http://raspberrypi:3000` or `http://<IP>:3000` from any device on the same network.
+
+<br> </br>
+
+##### Read Sensor Values and Write them to InfluxDB
+
+```
+# Install dependencies
+sudo apt-get install git build-essential python-dev
+```
+
+Install the MCP3008 library (https://github.com/adafruit/Adafruit_Python_MCP3008)
+
+```
+git clone https://github.com/adafruit/Adafruit_Python_MCP3008.git
+cd Adafruit_Python_MCP3008
+sudo python setup.py install
+```
+
+```
+# Install InfluxDB Python library
+pip install influxdb
+```
+
+Copy the provided `co2.py` file.
+
+
+<br> </br>
+
+##### Use SystemD to start and run our Python script automatically
+
+Copy the provided `co2_monitor.service` file to `/etc/systemd/system/co2_monitor.service` and then enable and start the service:
+
+The service file assumes that your python script is located at `/home/$USER/Adafruit_Python_MCP3008/co2.py`. If it is located elsewhere adjust the `ExecStart` command accordingly.
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable co2_monitor.service
+sudo systemctl start co2_monitor.service
+```
