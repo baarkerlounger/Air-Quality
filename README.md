@@ -1,6 +1,6 @@
 # Raspberry Pi Zero based Air Quality Monitoring Project
 
-## Hardware [1]:
+## Hardware [[1]](#ref_1):
 
 - 1 Raspberry Pi Zero WH (with pre-soldered header) - £ 13.50
 
@@ -20,13 +20,13 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 
 ## Installation
 
-#### Connect the Hardware [2], [3]
+#### Connect the Hardware [[2]](#ref_2), [[3]](#ref_3)
 
 ![MCP3008 pin diagram](images/setup/mcp3008-pins.gif) ![Raspberry Pi Zero pin diagram](images/setup/raspberry-pi-pins.png)
 
 <br></br>
 
-#### Prepare the Raspberry Pi OS [4]
+#### Prepare the Raspberry Pi OS [[4]](#ref_4)
 
 Download the Raspberry Pi Imager from https://www.raspberrypi.org/software/ (Raspberry PI imager) and use it to write `Raspberry Pi OS with desktop and recommended software (32 bit)` (the default option) to the MicroSD card.
 
@@ -85,7 +85,7 @@ sudo apt-get clean
 
 <br></br>
 
-#### Install InfluxDB [5]
+#### Install InfluxDB [[5]](#ref_5)
 
 We're going to use InfluxDB as the timeseries database to store our sensor values. It'll be added as a data source in Grafana.
 
@@ -140,7 +140,7 @@ Your InfluxDB instance should now be available on `http://localhost:8086`
 
 <br></br>
 
-#### Install Grafana [6]
+#### Install Grafana [[6]](#ref_6)
 
 We're going to use Grafana to visualise our CO2 sensor data over time. The Raspberry PI is armv6 based, packages are available at https://grafana.com/grafana/download?platform=arm.
 
@@ -164,7 +164,7 @@ Your Grafana instance should now be available on:
 
 <br> </br>
 
-##### Read Sensor Values and Write them to InfluxDB [7], [8]
+##### Read Sensor Values and Write them to InfluxDB [[7]](#ref_7), [[8]](#ref_8)
 
 ```
 # Install dependencies
@@ -252,11 +252,11 @@ sudo systemctl start co2_monitor.service
 
 
 #### References with thanks
-[1]: https://thepihut.com/
-[2]: https://raspberrypi.stackexchange.com/questions/83610/gpio-pinout-orientation-raspberypi-zero-w
-[3]: https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008
-[4]: https://qrys.ch/setting-up-a-raspberry-pi-zero-w-wh-the-headless-way-with-wifi-and-vnc/
-[5]: https://www.circuits.dk/install-grafana-influxdb-raspberry/
-[6]: https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/
-[7]: https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm#
-[8]: https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1
+<a id="ref_1"></a>[1] https://thepihut.com/ <br />
+[<a id="ref_2"></a>2] https://raspberrypi.stackexchange.com/questions/83610/gpio-pinout-orientation-raspberypi-zero-w <br />
+<a id="ref_3"></a>[3] https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008 <br />
+<a id="ref_4"></a>[4] https://qrys.ch/setting-up-a-raspberry-pi-zero-w-wh-the-headless-way-with-wifi-and-vnc/ <br />
+<a id="ref_5"></a>[5] https://www.circuits.dk/install-grafana-influxdb-raspberry/ <br />
+<a id="ref_6"></a>[6] https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/ <br />
+<a id="ref_7"></a>[7] https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm <br />
+<a id="ref_8"></a>[8] https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1
