@@ -246,9 +246,9 @@ LSB size = FSB * no_ADC_CODES
 ```
 
 where:
- -  FSB is the Full Scale Range of the values we are representing. In this case the Gravity Infrared Sensor V1.1 measures CO2 concentrations from 0 to 5000 ppm (parts per million) so our FSB is 5000.
+ -  FSB is the Full Scale Range of the values we are representing. In this case our reference voltage is 3.3V (provided by the Raspberry Pi Zero), so our FSB is 3300mV.
 
- - no_ADC_CODES is the number of digital output codes/values the ADC has available to represent the FSB. In this case the MCP3008 we are using is a 10Bit ADC so we have 2^10 = 1024 codes available.
+ - no_ADC_CODES is the number of digital output codes/values the ADC has available to represent the FSB. In this case the MCP3008 we are using is a 10Bit ADC so we have 2^10 = 1024 codes available (0-1023).
 
 We calculate the output voltage of the sensor by
  ```
@@ -258,14 +258,14 @@ We calculate the output voltage of the sensor by
  i.e.
 
  ```
- voltage = sensor_value * (5000 / 1024.0)
+ voltage = sensor_value * (3300 / 1024.0)
  ```
 
  The Gravity Infrared CO2 Sensor V1.1 output signal has a range from 0.4V - 2V. If our calculated voltage is below 0.4V (400mV) we know the sensor is still pre-heating (~3 mins).
 
  If it's between 0.4V and 2V we need to convert it back to concentration in ppm.
 
- We do that by scaling our available output voltage values (1600mV) over the range of measurement values (5000ppm):
+ We do that by scaling our available output voltage values (1600mV) over the range of measurement values: 5000ppm (the Gravity Infrared CO2 Monitor V1.1 measures CO2 concentrations from 0-5000ppm):
 
  ```
  (voltage - 400) * 50.0 / 16.0

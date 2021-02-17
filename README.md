@@ -13,6 +13,4 @@ Example output showing the effect of opening the balcony door overnight and then
 <br />
 <br />
 
-The values do seem a little on the high side. I'm unsure whether that's a poor reflection of the air quality in a small city centre flat or whether the sensor itself needs calibrating down a bit.
-
 If you want to have a go at putting something similar together you can follow the [Setup Guide](Setup_Guide.md).

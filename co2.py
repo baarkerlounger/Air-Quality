@@ -2,9 +2,6 @@
 
 import time
 from influxdb import InfluxDBClient
-
-# Import SPI library (for hardware SPI) and MCP3008 library.
-import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
 
 client = InfluxDBClient(host='localhost', port=8086)
@@ -17,20 +14,16 @@ MOSI = 24
 CS   = 25
 mcp = Adafruit_MCP3008.MCP3008(clk=CLK, cs=CS, miso=MISO, mosi=MOSI)
 
-# Hardware SPI configuration:
-# SPI_PORT   = 0
-# SPI_DEVICE = 0
-# mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
 # Take a sensor reading every 5 seconds and write it to  InfluxDB
 while True:
     SENSOR_CHANNEL = 1
     sensor_value = mcp.read_adc(SENSOR_CHANNEL)
     # https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1
-    # FSR (Full Scale Range) = 5000ppm (Sensor can measure 0-5000ppm)
-    # MCP3008 is a 10bit ADC so 2^10 codes/values available to represent the full scale range
-    # LSB size = FSR/2^N = 5000 / 1024
-    FULL_SCALE_RANGE = 5000
+    # FSR (Full Scale Range) = 3300mV (3.3V reference voltage)
+    # MCP3008 is a 10bit ADC so 2^10 codes/values available to represent the full scale range (0-1023)
+    # LSB size = FSR/2^N = 3300 / 1024
+    FULL_SCALE_RANGE = 3300
     ADC_CODES = 1024.0
     lsb_size = FULL_SCALE_RANGE / ADC_CODES
     voltage = sensor_value * lsb_size
