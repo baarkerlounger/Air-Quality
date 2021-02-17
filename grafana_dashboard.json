@@ -43,13 +43,13 @@
       "hiddenSeries": false,
       "id": 2,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -71,7 +71,7 @@
           "groupBy": [
             {
               "params": [
-                "5m"
+                "1m"
               ],
               "type": "time"
             },
@@ -124,14 +124,16 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:339",
           "format": "ppm",
-          "label": null,
+          "label": "",
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "5000",
+          "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:340",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -153,12 +155,12 @@
     "list": []
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "CO2 Monitor",
   "uid": "ucVBZoiRk",
-  "version": 5
+  "version": 6
 }
