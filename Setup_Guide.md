@@ -216,7 +216,7 @@ Your Grafana instance should now be available on:
 
 <br> </br>
 
-##### Read Sensor Values and Write them to InfluxDB [[7]](#ref_7), [[8]](#ref_8)
+##### Read Sensor Values and Write them to InfluxDB [[7]](#ref_7), [[8]](#ref_8), [[9]](#ref_9)
 
 ```
 # Install dependencies
@@ -311,4 +311,5 @@ sudo systemctl start co2_monitor.service
 <a id="ref_5"></a>[5] https://www.circuits.dk/install-grafana-influxdb-raspberry/ <br />
 <a id="ref_6"></a>[6] https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/ <br />
 <a id="ref_7"></a>[7] https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm <br />
-<a id="ref_8"></a>[8] https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1
+<a id="ref_8"></a>[8] https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1 <br />
+<a id="ref_9"></a>[9] https://projects-raspberry.com/interfacing-an-spi-adc-mcp3008-chip-to-the-raspberry-pi-using-c-spidev/

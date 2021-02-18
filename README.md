@@ -8,7 +8,7 @@ An attempt to make a home CO2 Monitor using a Raspberry Pi Zero as the microcont
 <br />
 Example output showing the effect of opening the balcony door overnight and then closing it again in the morning:
 
-<img src="images/grafana/output.jpg" alt="Grafana Output" width="500"/>
+<img src="images/grafana/output.png" alt="Grafana Output" width="500"/>
 
 <br />
 <br />
