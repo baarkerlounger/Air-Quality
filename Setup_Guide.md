@@ -292,7 +292,7 @@ This does not account for any additional error introduced by the ADC.
 
 ##### Use SystemD to start and run our Python script automatically
 
-Copy the provided `co2_monitor.service` file to `/etc/systemd/system/co2_monitor.service` and then enable and start the service:
+Copy the provided `systemd/co2_monitor.service` file to `/etc/systemd/system/co2_monitor.service` and then enable and start the service:
 
 The service file assumes that your python script is located at `/home/$USER/Adafruit_Python_MCP3008/co2.py`. If it is located elsewhere adjust the `ExecStart` command accordingly.
 
