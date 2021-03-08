@@ -13,4 +13,4 @@ Example output showing the effect of opening the balcony door overnight and then
 <br />
 <br />
 
-If you want to have a go at putting something similar together you can follow the [Setup Guide](Setup_Guide.md).
+If you want to have a go at putting something similar together you can follow the [Setup Guide](setup_guide.md).
