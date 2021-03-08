@@ -5,7 +5,7 @@ from influxdb import InfluxDBClient
 import Adafruit_MCP3008
 
 client = InfluxDBClient(host='localhost', port=8086)
-client.switch_database('co2')
+client.switch_database('air_quality')
 
 # Software SPI configuration:
 CLK  = 18

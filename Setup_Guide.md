@@ -185,7 +185,7 @@ influx
 ```
 
 ```
-create database co2
+create database air_quality
 ```
 
 Your InfluxDB instance should now be available on `http://localhost:8086`
