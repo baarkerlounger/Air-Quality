@@ -1,18 +1,15 @@
 # Raspberry Pi Zero based Air Quality Monitoring Project
 
-## Hardware [[1]](#ref_1):
+## Hardware [[1]](#ref_1), [[2]](#ref_2):
 
 - 1 Raspberry Pi Zero WH (with pre-soldered header) - £ 13.50
-
 - 1 Gravity: Analog Infrared CO2 Sensor For Arduino (0~5000 ppm) - £ 61.00
-
 - 1 MCP3008 - 8-Channel 10-Bit ADC With SPI Interface - £ 3.00
-
 - 1 Raspberry Pi Breadboard (Half Size) - £ 3.00
-
 - 1 The Pi Hut Jumper Bumper Pack (120pcs Dupont Wire) - £ 6.00
-
 - 1 Micro SD Card 16GB - £ 7.00
+- PMS5003 Particulate Matter Sensor - £24.90
+- Pimoroni Breakout board for PMS5003 Sensor - £2.99
 
 We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an inbuilt Analog to Digital converter like Arduinos do we need to add an external ADC to our circuit for which we use the MCP3008.
 
@@ -20,7 +17,9 @@ We use a Raspberry Pi Zero WH as our microcontroller. Since it doesn't have an i
 
 ## Installation
 
-#### Connect the Hardware [[2]](#ref_2), [[3]](#ref_3)
+#### Connect the Hardware [[3]](#ref_3), [[4]](#ref_4)
+
+##### CO2 Sensor
 
 Plug the MCP3008 ADC into the breadboard across the centre line.
 
@@ -78,7 +77,22 @@ Using a Male / Male Jumper wire we connect the CO2 Sensor Signal output to Chann
 Using Male / Female Jumper wires we connect the CO2 Sensor VCC and GND outputs directly to the Raspberry Pi Zero pins.
 <br></br>
 
-#### Prepare the Raspberry Pi OS [[4]](#ref_4)
+##### Particulate Sensor
+Use Female / Female Jumper wires to make the following connections between the PMS5003 and the Raspberry Pi:
+
+
+    PMS5003 VCC to Raspberry Pi 5V  (5V power +)
+    PMS5003 GNDto Raspberry Pi GND (Ground -)
+    PMS5003 TX to Raspberry Pi GPIO14 (UART0_TXD Serial Transmit)
+    PMS5003 RX to Raspberry Pi GPIO15 (UART0_RXD Serial Receive)
+
+We can leave EN and RESET unconnected.
+
+All UARTs on the Raspberry Pi are 3.3V so these are directly compatible with the UART pins on the PMS5003 sensor without needing a level shift.
+
+<br></br>
+
+#### Prepare the Raspberry Pi OS [[5]](#ref_5)
 
 Download the Raspberry Pi Imager from https://www.raspberrypi.org/software/ (Raspberry PI imager) and use it to write `Raspberry Pi OS with desktop and recommended software (32 bit)` (the default option) to the MicroSD card.
 
@@ -137,7 +151,7 @@ sudo apt-get clean
 
 <br></br>
 
-#### Install InfluxDB [[5]](#ref_5)
+#### Install InfluxDB [[6]](#ref_6)
 
 We're going to use InfluxDB as the timeseries database to store our sensor values. It'll be added as a data source in Grafana.
 
@@ -192,7 +206,7 @@ Your InfluxDB instance should now be available on `http://localhost:8086`
 
 <br></br>
 
-#### Install Grafana [[6]](#ref_6)
+#### Install Grafana [[7]](#ref_7)
 
 We're going to use Grafana to visualise our CO2 sensor data over time. The Raspberry PI is armv6 based, packages are available at https://grafana.com/grafana/download?platform=arm.
 
@@ -216,7 +230,7 @@ Your Grafana instance should now be available on:
 
 <br> </br>
 
-##### Read Sensor Values and Write them to InfluxDB [[7]](#ref_7), [[8]](#ref_8), [[9]](#ref_9)
+##### Read CO2 Sensor Values and Write them to InfluxDB [[8]](#ref_8), [[9]](#ref_9), [[10]](#ref_10)
 
 ```
 # Install dependencies
@@ -290,26 +304,81 @@ This does not account for any additional error introduced by the ADC.
 
 <br> </br>
 
+##### Read Particulate Sensor values and write them to InfluxDB [[11]](#ref_11), [[12]](#ref_12), [[13]](#ref_13)
+
+Install PMS5003 Python library
+ ```
+ git clone https://github.com/pimoroni/pms5003-python
+ cd pms5003-python
+ sudo ./install.sh
+ ```
+
+The Raspberry Pi Zero contains a UART serial port on the GPIO header on pins 8, TXD (GPIO 14) and 10, RXD (GPIO 15). We  need to disable login shell over serial and enable UART hardware.We use the raspi-config GUI to do this:
+ ```
+ sudo raspi-config
+ ```
+
+ Select “3 Interface Options”
+ <img src="images/setup/raspi-config-1.png" alt="raspi-config menu" width="500"/>
+
+ Select “P6 Serial Port”
+ <img src="images/setup/raspi-config-2.png" alt="raspi-config menu 2" width="500"/>
+
+ Select “No”
+ <img src="images/setup/raspi-config-3.png" alt="raspi-config menu 3" width="500"/>
+
+ Select “Yes”
+ <img src="images/setup/raspi-config-4.png" alt="raspi-config menu 4" width="500"/>
+
+ Select “Ok”
+ <img src="images/setup/raspi-config-5.png" alt="raspi-config menu 5" width="500"/>
+
+ Select "Reboot Now"
+
+
+On the Raspberry Pi Zero there are two UART controllers that use the same pins, mini UART (` /dev/ttyS0`) and PL011 UART (`/dev/ttyAMA0`). By default the Pi is set to use mini UART and PL0111 is used for the Bluetooth module. The mini UART controller's baud rate is linked to the VPU core frequency so as the VPU frequency changes depending on processor load so does the baud rate of the UART controller. This will cause problems as serial devices expect a constant baud rate during communication so we need to use PL011 UART instead (the file output is  also hardcoded in the PMS5003 Python library).
+
+Disable the Bluetooth module and map PL011 UART on pins 14 and 15. Add the following to the end of `/boot/config.txt`
+
+ ```
+dtoverlay=pi3-miniuart-bt
+ ```
+
+ and reboot.
+
+
+ Copy the provided `pms.py` script.
+
+ The script reads sensor data in over PL011 (`/dev/ttyAMA0` file in Linux) every 5 seconds and writes the values to InfluxDB.
+ <br /> <br />
+
 ##### Use SystemD to start and run our Python script automatically
 
-Copy the provided `systemd/co2_monitor.service` file to `/etc/systemd/system/co2_monitor.service` and then enable and start the service:
+Copy the provided `/etc/systemd/system/` service files and then enable and start them:
 
-The service file assumes that your python script is located at `/home/$USER/Adafruit_Python_MCP3008/co2.py`. If it is located elsewhere adjust the `ExecStart` command accordingly.
+The service file assumes that your python script for the CO2 monitor is located at `/home/$USER/Adafruit_Python_MCP3008/co2.py` and your python script for the particulate sensor is located at `/home/$USER/pms5003-python/pms.py`. If either is located elsewhere adjust the `ExecStart` command accordingly.
 
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable co2_monitor.service
 sudo systemctl start co2_monitor.service
+
+sudo systemctl enable pms.service
+sudo systemctl start pms.service
 ```
 
 
 #### References with thanks
 <a id="ref_1"></a>[1] https://thepihut.com/ <br />
-[<a id="ref_2"></a>2] https://raspberrypi.stackexchange.com/questions/83610/gpio-pinout-orientation-raspberypi-zero-w <br />
-<a id="ref_3"></a>[3] https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008 <br />
-<a id="ref_4"></a>[4] https://qrys.ch/setting-up-a-raspberry-pi-zero-w-wh-the-headless-way-with-wifi-and-vnc/ <br />
-<a id="ref_5"></a>[5] https://www.circuits.dk/install-grafana-influxdb-raspberry/ <br />
-<a id="ref_6"></a>[6] https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/ <br />
-<a id="ref_7"></a>[7] https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm <br />
-<a id="ref_8"></a>[8] https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1 <br />
-<a id="ref_9"></a>[9] https://projects-raspberry.com/interfacing-an-spi-adc-mcp3008-chip-to-the-raspberry-pi-using-c-spidev/
+<a id="ref_2 "></a>[2] https://coolcomponents.co.uk/ <br />
+<a id="ref_3"></a>[3] https://raspberrypi.stackexchange.com/questions/83610/gpio-pinout-orientation-raspberypi-zero-w <br />
+<a id="ref_4"></a>[4] https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008 <br />
+<a id="ref_5"></a>[5] https://qrys.ch/setting-up-a-raspberry-pi-zero-w-wh-the-headless-way-with-wifi-and-vnc/ <br />
+<a id="ref_6"></a>[6] https://www.circuits.dk/install-grafana-influxdb-raspberry/ <br />
+<a id="ref_7"></a>[7] https://computingforgeeks.com/install-influxdb-on-debian-10-buster-linux/ <br />
+<a id="ref_8"></a>[8] https://circuitdigest.com/microcontroller-projects/interfacing-gravity-inrared-co2-sensor-to-measure-carbon-dioxide-in-ppm <br />
+<a id="ref_9"></a>[9] https://e2e.ti.com/blogs_/archives/b/precisionhub/archive/2016/04/01/it-s-in-the-math-how-to-convert-adc-code-to-a-voltage-part-1 <br />
+<a id="ref_10"></a>[10] https://projects-raspberry.com/interfacing-an-spi-adc-mcp3008-chip-to-the-raspberry-pi-using-c-spidev/
+<a id="ref_11 "></a>[11] https://www.rigacci.org/wiki/doku.php/doc/appunti/hardware/raspberrypi_air <br />
+<a id="ref_12 "></a>[12] https://pypi.org/project/pms5003/ <br />
+<a id="ref_13 "></a>[13]  https://www.abelectronics.co.uk/kb/article/1035/raspberry-pi-3--4-and-zero-w-serial-port-usage <br />
