@@ -318,20 +318,25 @@ The Raspberry Pi Zero contains a UART serial port on the GPIO header on pins 8, 
  sudo raspi-config
  ```
 
- Select “3 Interface Options”
- <img src="images/setup/raspi-config-1.png" alt="raspi-config menu" width="500"/>
+ Select “3 Interface Options” <br />
+ <img src="images/setup/raspi-config-1.png" alt="raspi-config menu" width="500"/> <br />
+ <br />
 
- Select “P6 Serial Port”
- <img src="images/setup/raspi-config-2.png" alt="raspi-config menu 2" width="500"/>
+ Select “P6 Serial Port” <br />
+ <img src="images/setup/raspi-config-2.png" alt="raspi-config menu 2" width="500"/> <br />
+ <br />
 
- Select “No”
- <img src="images/setup/raspi-config-3.png" alt="raspi-config menu 3" width="500"/>
+ Select “No” <br />
+ <img src="images/setup/raspi-config-3.png" alt="raspi-config menu 3" width="500"/> <br />
+<br />
 
- Select “Yes”
- <img src="images/setup/raspi-config-4.png" alt="raspi-config menu 4" width="500"/>
+ Select “Yes” <br />
+ <img src="images/setup/raspi-config-4.png" alt="raspi-config menu 4" width="500"/> <br />
+<br />
 
- Select “Ok”
- <img src="images/setup/raspi-config-5.png" alt="raspi-config menu 5" width="500"/>
+ Select “Ok” <br />
+ <img src="images/setup/raspi-config-5.png" alt="raspi-config menu 5" width="500"/> <br />
+<br />
 
  Select "Reboot Now"
 
