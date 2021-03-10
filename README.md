@@ -7,7 +7,7 @@ An attempt to make a home CO2 Monitor using a Raspberry Pi Zero as the microcont
 <br />
 <br />
 Example output:
-<img src="images/grafana/Screenshot_2021-03-08 Air Quality Monitor - Grafana(1).png" alt="Grafana Output" width="500"/>
+<img src="images/grafana/output.png" alt="Grafana Output" width="500"/>
 
 <br />
 <br />
